@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  chatbot_backend:
+    image: pramodshanmugam/pramod_chatbot_backend:latest
+    ports:
+      - "8000:8000"
+    environment:
+      - OLLAMA_API_URL=http://host.docker.internal:11434/api/generate
+    networks:
+      - app-network
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  chatbot_frontend:
+    image: pramodshanmugam/chatbot_frontend
+    build:
+      context: ./chatbot-frontend-react  # Path to your frontend project
+      args:
+        REACT_APP_CHAT_NAME: "Pramod's"  # Passing the env variable at build time
+    ports:
+      - "3000:3000"
+    depends_on:
+      - chatbot_backend
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
