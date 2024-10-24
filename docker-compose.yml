@@ -13,13 +13,11 @@ services:
       - "host.docker.internal:host-gateway"
 
   chatbot_frontend:
-    image: pramodshanmugam/chatbot_frontend
-    build:
-      context: ./chatbot-frontend-react  # Path to your frontend project
-      args:
-        REACT_APP_CHAT_NAME: "Pramod's"  # Passing the env variable at build time
+    image: pramodshanmugam/chatbot_frontend:latest  # Use the pushed frontend image from Docker Hub
     ports:
       - "3000:3000"
+    environment:
+      - REACT_APP_CHAT_NAME="Pramod's GPT"  # Passing the environment variable for the frontend
     depends_on:
       - chatbot_backend
     networks:
